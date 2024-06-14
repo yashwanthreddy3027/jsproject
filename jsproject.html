@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MUSIC PLAYER</title>
+    <script
+      src="https://kit.fontawesome.com/120fc166d7.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="jsproject.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="musicplayer">
+        <nav>
+          <div class="circle">
+            <i class="fa-solid fa-angle-left"></i>
+          </div>
+          <div class="circle">
+            <i class="fa-solid fa-bars"></i>
+          </div>
+        </nav>
+        <img src="./pushpa.jpg" class="song-img" id="song-img" />
+        <h1 id="song-name">sooseki</h1>
+        <p id="song-title">Pushpa 2 The Rule</p>
+
+        <audio id="song">
+          <source src="./[iSongs.info] 02 - Sooseki.mp3" type="audio/mpeg" id="source"/>
+        </audio>
+        <input type="range" value="0" id="progress" />
+
+        <div class="controls">
+          <div onclick="prevSong()"><i class="fa-solid fa-backward"></i></div>
+          <div onclick="playpause()">
+            <i class="fa-solid fa-play" id="controlicon"></i>
+          </div>
+          <div onclick="nextSong()"><i class="fa-solid fa-forward"></i></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const songData = [
+        {
+          imagesrc: "./premaluimg.jpg",
+          name: "mini maharani",
+          title: "premalu",
+          audiosrc: "./[iSongs.info] 03 - Mini Maharani.mp3",
+        },
+        {
+          imagesrc: "./nenunaimage.jpg",
+          name: "padithinamo",
+          title: "nenu na rakshasi",
+          audiosrc: "./[iSongs.info] 02 - Padithinammo.mp3",
+        },
+        {
+          imagesrc: "./bha2.jpg",
+          name: "kanna Nidurinchara",
+          title: "Baahubali 2",
+          audiosrc: "./[iSongs.info] 03 - Kannaa Nidurinchara.mp3",
+        },
+        {
+          imagesrc: "./premaluimg.jpg",
+          name: "Welcome To Hyderabad",
+          title: "premalu",
+          audiosrc: "./[iSongs.info] 02 - Welcome To Hyderabad.mp3",
+        },
+        {
+          imagesrc: "./vmovie.jpg",
+          name: "Ranga Rangali",
+          title: "v",
+          audiosrc: "./[iSongs.info] 03 - Ranga Rangeli.mp3",
+        },
+        {
+          imagesrc: "./mrperfect.jpg",
+          name: "badhulu thochani",
+          title: "mr perfect",
+          audiosrc: "./mrperfectSong.mpeg",
+        },
+        {
+          imagesrc: "./vmovie.1img.jpg",
+          name: "Manasu Maree",
+          title: "v",
+          audiosrc: "./[iSongs.info] 01 - Manasu Maree.mp3",
+        },
+        {
+          imagesrc: "./businessman.jpg",
+          name: "Bad boyz",
+          title: "BusinessMan",
+          audiosrc: "./businessmanSong.mpeg",
+        },
+        {
+          imagesrc: "./animal.jpg",
+          name: "Jamal-Jamaloo",
+          title: "Animal",
+          audiosrc: "./Jamal-Jamaloo-Animal-Song-Ringtone.mp3",
+        },
+      ];
+
+      let index = 0;
+      const songImg = document.getElementById("song-img");
+      const songName = document.getElementById("song-name");
+      const songTitle = document.getElementById("song-title");
+      const song = document.getElementById("song");
+      const source = document.getElementById("source");
+      const progress = document.getElementById("progress");
+      const controlicon = document.getElementById("controlicon");
+
+      function updateSongDetails() {
+        songImg.src = songData[index].imagesrc;
+        songName.innerText = songData[index].name;
+        songTitle.innerText = songData[index].title;
+        source.src = songData[index].audiosrc;
+        song.load();
+        playSong();
+      }
+
+      function nextSong() {
+        index = (index + 1) % songData.length;
+        updateSongDetails();
+      }
+
+      function prevSong() {
+        index = (index - 1 + songData.length) % songData.length;
+        updateSongDetails();
+      }
+
+      function playpause() {
+        if (controlicon.classList.contains("fa-pause")) {
+          song.pause();
+          controlicon.classList.remove("fa-pause");
+          controlicon.classList.add("fa-play");
+        } else {
+          playSong();
+        }
+      }
+
+      function playSong() {
+        song.play();
+        controlicon.classList.add("fa-pause");
+        controlicon.classList.remove("fa-play");
+      }
+
+      song.onloadedmetadata = function () {
+        progress.max = song.duration;
+        progress.value = song.currentTime;
+      };
+
+      song.addEventListener("timeupdate", () => {
+        progress.value = song.currentTime;
+      });
+
+      progress.addEventListener("input", () => {
+        song.currentTime = progress.value;
+        playSong();
+      });
+    </script>
+  </body>
+</html>
